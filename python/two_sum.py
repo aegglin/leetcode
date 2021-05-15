@@ -33,7 +33,7 @@ def twoSum(self, nums, target):
         # One-pass Hash table
         # You don't need two passes to go through the table
         # and also check if a complement exists
-        nums_indices = {}
+        nums_indices = {} # regular dict this time because it won't be filled beforehand so we don't have to worry about duplicates
         # O(n) because we just require one traversal
         for i, num in enumerate(nums):
             complement = target - num
