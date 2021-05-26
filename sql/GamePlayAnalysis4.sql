@@ -54,5 +54,10 @@ WITH first_login_date AS
     GROUP BY player_id
 )
 
-SELECT ROUND(COUNT(DISTINCT a.player_id) / (SELECT COUNT(DISTINCT player_id) FROM Activity), 2) AS fraction
-FROM Activity a JOIN first_login_date fld ON a.player_id = fld.player_id AND a.event_date = fld.event_date + 1
+SELECT ROUND(
+        COUNT(DISTINCT a.player_id) / 
+            (SELECT COUNT(DISTINCT player_id) FROM Activity)
+       ,2) AS fraction
+FROM Activity a 
+    JOIN first_login_date fld ON a.player_id = fld.player_id 
+        AND a.event_date = fld.event_date + 1
