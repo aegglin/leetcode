@@ -44,3 +44,14 @@ SELECT
 FROM Activity a1 JOIN Activity a2 ON a1.event_date + 1 = a2.event_date 
     AND a1.player_id = a2.player_id
 WHERE (a1.player_id, a1.event_date) IN (SELECT player_id, MIN(event_date) FROM Activity GROUP BY player_id)
+
+#Another solution using a CTE, but with the same principles: 
+WITH first_login_date AS
+(
+    SELECT player_id, MIN(event_date) AS event_date
+    FROM Activity
+    GROUP BY player_id
+)
+
+SELECT ROUND(COUNT(DISTINCT a.player_id) / (SELECT COUNT(DISTINCT player_id) FROM Activity), 2) AS fraction
+FROM Activity a JOIN first_login_date fld ON a.player_id = fld.player_id AND a.event_date = fld.event_date + 1
